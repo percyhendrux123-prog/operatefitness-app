@@ -1,12 +1,14 @@
 [build]
-  # Static HTML site — no package.json / no compile step.
-  # No-op command ensures exit 0 even if Netlify UI still has a build script set.
-  command = "true"
-  publish = "."
+  # UI still has publish directory = dist (legacy Vite app).
+  # Copy static files into dist so deploy succeeds without dashboard changes.
+  command = "mkdir -p dist/peptides dist/assets netlify/functions && cp index.html dist/ && cp peptides/index.html dist/peptides/ && cp -r assets/. dist/assets/ 2>/dev/null || true"
+  publish = "dist"
 
 [build.environment]
-  # Skip any Node install attempts
   NODE_VERSION = "20"
+
+[functions]
+  directory = "netlify/functions"
 
 [[headers]]
   for = "/*"
