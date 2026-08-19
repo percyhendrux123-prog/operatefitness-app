@@ -1,7 +1,7 @@
 [build]
   # UI still has publish directory = dist (legacy Vite app).
   # Copy static files into dist so deploy succeeds without dashboard changes.
-  command = "mkdir -p dist/peptides dist/assets netlify/functions && cp index.html dist/ && cp peptides/index.html dist/peptides/ && cp -r assets/. dist/assets/ 2>/dev/null || true"
+  command = "mkdir -p dist/peptides dist/policies dist/assets netlify/functions && cp index.html robots.txt sitemap.xml dist/ && cp peptides/index.html dist/peptides/ && cp policies/index.html dist/policies/ && cp -r assets/. dist/assets/"
   publish = "dist"
 
 [build.environment]
@@ -26,4 +26,5 @@
 [[redirects]]
   from = "/peptides"
   to = "/peptides/"
-  status = 200
+  status = 301
+  force = true

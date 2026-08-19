@@ -4,14 +4,51 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0a0a0a">
-<title>PKFIT — Peptide Calculator</title>
-<meta name="description" content="Free research peptide reconstitution and dose calculator. Structure over guesswork.">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/assets/fonts/anton-v27-latin-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/bebas-neue-v16-latin-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/dm-mono-v16-latin-400.woff2" as="font" type="font/woff2" crossorigin>
+<title>Peptide Reconstitution Calculator | PKFIT</title>
+<meta name="description" content="Free research peptide reconstitution and dose calculator from PKFIT. Calculates concentration, draw volume, and syringe units from user-entered values.">
+<link rel="canonical" href="https://operatefitness.app/peptides/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="operatefitness.app">
+<meta property="og:title" content="Peptide Reconstitution Calculator">
+<meta property="og:description" content="Calculate research peptide concentration, draw volume, and syringe units from user-entered vial, water, and dose values.">
+<meta property="og:url" content="https://operatefitness.app/peptides/">
+<meta property="og:image" content="https://operatefitness.app/assets/og-pkfit.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="PKFIT research peptide reconstitution calculator">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Peptide Reconstitution Calculator">
+<meta name="twitter:description" content="Free research calculator for concentration, draw volume, and syringe units.">
+<meta name="twitter:image" content="https://operatefitness.app/assets/og-pkfit.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Peptide Reconstitution Calculator",
+  "url": "https://operatefitness.app/peptides/",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "Any",
+  "softwareVersion": "1.1.0",
+  "dateModified": "2026-08-19",
+  "author": {"@type": "Organization", "name": "PKFIT"},
+  "description": "Research peptide calculator for concentration, draw volume, and syringe units based on user-entered values.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
 <style>
-/* PKFIT brand tokens — mirrors operatefitness.app /assets/brand.css */
-@font-face{font-family:'Bebas Neue';font-style:normal;font-weight:400;font-display:swap;src:url('/assets/fonts/bebas-neue-v16-latin-400.woff2') format('woff2'),url('/fonts/bebas-neue-v16-latin-400.woff2') format('woff2')}
-@font-face{font-family:'Anton';font-style:normal;font-weight:400;font-display:swap;src:url('/assets/fonts/anton-v27-latin-400.woff2') format('woff2'),url('/fonts/anton-v27-latin-400.woff2') format('woff2')}
-@font-face{font-family:'DM Mono';font-style:normal;font-weight:400;font-display:swap;src:url('/assets/fonts/dm-mono-v16-latin-400.woff2') format('woff2'),url('/fonts/dm-mono-v16-latin-400.woff2') format('woff2')}
-@font-face{font-family:'DM Mono';font-style:normal;font-weight:500;font-display:swap;src:url('/assets/fonts/dm-mono-v16-latin-500.woff2') format('woff2'),url('/fonts/dm-mono-v16-latin-500.woff2') format('woff2')}
+/* PKFIT brand tokens - mirrors operatefitness.app /assets/brand.css */
+@font-face{font-family:'Bebas Neue';font-style:normal;font-weight:400;font-display:optional;src:url('/assets/fonts/bebas-neue-v16-latin-400.woff2') format('woff2'),url('/fonts/bebas-neue-v16-latin-400.woff2') format('woff2')}
+@font-face{font-family:'Anton';font-style:normal;font-weight:400;font-display:optional;src:url('/assets/fonts/anton-v27-latin-400.woff2') format('woff2'),url('/fonts/anton-v27-latin-400.woff2') format('woff2')}
+@font-face{font-family:'DM Mono';font-style:normal;font-weight:400;font-display:optional;src:url('/assets/fonts/dm-mono-v16-latin-400.woff2') format('woff2'),url('/fonts/dm-mono-v16-latin-400.woff2') format('woff2')}
+@font-face{font-family:'DM Mono';font-style:normal;font-weight:500;font-display:optional;src:url('/assets/fonts/dm-mono-v16-latin-500.woff2') format('woff2'),url('/fonts/dm-mono-v16-latin-500.woff2') format('woff2')}
 
 :root{
   --base:#080808;
@@ -33,6 +70,10 @@
 
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.skip-link{position:absolute;left:12px;top:-60px;z-index:100;background:var(--gold);color:var(--base);padding:10px 14px;border-radius:8px;text-decoration:none}
+.skip-link:focus{top:12px}
 body{
   background:var(--body);
   color:var(--ink);
@@ -61,6 +102,7 @@ body{
 .btn-gold{background:var(--gold);color:var(--base);font-size:20px;padding:16px 26px;box-shadow:0 6px 18px rgba(201,168,76,0.22)}
 .btn-gold:hover{filter:brightness(1.05)}
 .btn-ghost{background:transparent;color:var(--ink);border:0.5px solid var(--line);font-size:18px;padding:15px 24px}
+.btn:disabled{cursor:not-allowed;opacity:0.72}
 
 /* Cards */
 .card{background:var(--card);border:0.5px solid var(--line);border-radius:var(--radius);padding:22px}
@@ -117,17 +159,18 @@ input:focus,select:focus{border-color:var(--gold)}
 .code{font-family:'Bebas Neue',sans-serif;letter-spacing:2px;color:var(--gold);font-size:22px}
 
 /* Disclaimer */
-.disclaimer{margin-top:32px;padding-top:20px;border-top:0.5px solid var(--line);font-size:11px;color:var(--faint);line-height:1.6;max-width:54ch}
+.disclaimer{margin-top:32px;padding-top:20px;border-top:0.5px solid var(--line);font-size:11px;color:#8a8a8a;line-height:1.6;max-width:54ch}
+.disclaimer a{color:var(--gold)}
+.research-notice{margin-top:24px;padding:14px 16px;border-left:2px solid var(--gold);background:var(--gold-tile);color:#cfcfcf;font-size:12px;line-height:1.6}
+.capacity-warning{margin-top:12px;color:var(--gold);font-size:12px;letter-spacing:.5px}
+.formula{margin-top:28px}.formula h2{font-size:24px}.formula ol{margin:16px 0 0 20px;color:#b8b8b8;font-size:12px;line-height:1.8}.formula code{color:var(--ink);font-family:'DM Mono',monospace}.formula-meta{margin-top:14px;color:#8a8a8a;font-size:11px;line-height:1.6}
 
-/* Hidden until unlocked */
-#calculator{display:none}
-#calculator.unlocked{display:block}
-#gate-wrap.hidden{display:none}
-
-.success-note{font-size:12px;color:var(--steel);margin-top:12px;letter-spacing:1px}
+#calculator{display:block}
+.main-wrap{padding:48px 22px 80px}.calculator-title{font-size:clamp(36px,9vw,64px);margin-top:14px;max-width:12ch}.calculator-intro{margin-top:18px;max-width:48ch;font-size:15px;color:#cfcfcf}.calculator-section{margin-top:36px}.calculator-heading{font-size:clamp(24px,5vw,34px);margin:10px 0 20px}.results-panel{margin-top:8px}.promo-copy{font-size:14px;color:#cfcfcf;line-height:1.6;margin-bottom:12px}
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to calculator</a>
 
 <nav class="nav">
   <div class="nav-in">
@@ -136,38 +179,21 @@ input:focus,select:focus{border-color:var(--gold)}
   </div>
 </nav>
 
-<main class="wrap" style="padding:48px 22px 80px">
+<main id="main" class="wrap main-wrap">
 
   <div class="kicker gold">RESEARCH TOOL</div>
-  <h1 class="anton" style="font-size:clamp(36px,9vw,64px);margin-top:14px;max-width:12ch">PEPTIDE CALCULATOR</h1>
-  <p style="margin-top:18px;max-width:48ch;font-size:15px;color:#cfcfcf">
+  <h1 class="anton calculator-title">PEPTIDE CALCULATOR</h1>
+  <p class="calculator-intro">
     Reconstitution and dose math. Transparent formulas. No guesswork.
   </p>
+  <p class="research-notice">Research-use mathematical conversion only. This tool does not recommend a compound or dose and is not medical advice. Verify every value independently before relying on it.</p>
 
-  <!-- EMAIL GATE -->
-  <div id="gate-wrap">
-    <div class="gate">
-      <div class="gate-title">UNLOCK THE CALCULATOR</div>
-      <p class="gate-copy">
-        Enter your email for free access. You’ll also receive the source link and your operator code.
-      </p>
-      <form id="gate-form">
-        <div class="field">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" required placeholder="you@domain.com" autocomplete="email">
-        </div>
-        <button type="submit" class="btn btn-gold">GET ACCESS</button>
-      </form>
-      <p class="success-note" id="gate-status" hidden></p>
-    </div>
-  </div>
-
-  <!-- CALCULATOR (unlocked after email) -->
+  <!-- CALCULATOR -->
   <div id="calculator">
 
-    <section style="margin-top:36px">
+    <section class="calculator-section">
       <div class="kicker steel">RECONSTITUTION</div>
-      <h2 class="bebas" style="font-size:clamp(24px,5vw,34px);margin:10px 0 20px">VIAL MATH</h2>
+      <h2 class="bebas calculator-heading">VIAL MATH</h2>
 
       <div class="card">
         <div class="grid-2">
@@ -185,47 +211,55 @@ input:focus,select:focus{border-color:var(--gold)}
           <input type="number" id="dose" min="0" step="1" value="250" inputmode="decimal">
         </div>
         <div class="field">
-          <label for="syringe">Syringe units (IU full scale)</label>
+          <label for="syringe">U-100 syringe capacity</label>
           <select id="syringe">
-            <option value="100" selected>100 IU (1 mL insulin)</option>
-            <option value="50">50 IU (0.5 mL)</option>
-            <option value="30">30 IU (0.3 mL)</option>
+            <option value="1" selected>100-unit syringe (1 mL)</option>
+            <option value="0.5">50-unit syringe (0.5 mL)</option>
+            <option value="0.3">30-unit syringe (0.3 mL)</option>
           </select>
         </div>
 
-        <div class="result-block card-nested" style="margin-top:8px">
+        <div class="result-block card-nested results-panel" role="status" aria-live="polite">
           <div class="result-row">
             <span class="result-label">CONCENTRATION</span>
-            <span class="result-value" id="out-conc">—</span>
+            <span class="result-value" id="out-conc">&mdash;</span>
           </div>
           <div class="result-row">
-            <span class="result-label">DRAW (UNITS)</span>
-            <span class="result-value gold" id="out-units">—</span>
+            <span class="result-label">DRAW (U-100 UNITS)</span>
+            <span class="result-value gold" id="out-units">&mdash;</span>
           </div>
           <div class="result-row">
             <span class="result-label">DRAW (mL)</span>
-            <span class="result-value" id="out-ml">—</span>
+            <span class="result-value" id="out-ml">&mdash;</span>
           </div>
         </div>
+        <p id="capacity-warning" class="capacity-warning" role="status" aria-live="polite" hidden></p>
       </div>
     </section>
 
-    <!-- SOURCE / PROMO -->
+    <section class="formula" aria-labelledby="formula-title">
+      <div class="kicker steel">FORMULA &amp; VALIDATION</div>
+      <h2 id="formula-title" class="bebas">HOW THE MATH RUNS</h2>
+      <ol>
+        <li><code>concentration = vial mg × 1000 ÷ water mL</code></li>
+        <li><code>draw mL = desired mcg ÷ concentration</code></li>
+        <li><code>U-100 units = draw mL × 100</code></li>
+        <li>Syringe capacity changes the maximum volume it can hold, not the U-100 conversion.</li>
+      </ol>
+      <p class="formula-meta">Maintained by PKFIT. Version 1.1.0. Last validated August 19, 2026 against browser regression cases for 1 mL, 0.5 mL, and 0.3 mL U-100 syringe capacities.</p>
+    </section>
+
+    <!-- PKFIT PROMO -->
     <div class="promo">
-      <div class="promo-kicker">SOURCE</div>
-      <p style="font-size:14px;color:#cfcfcf;line-height:1.6;margin-bottom:12px">
-        For research compounds, the operator source is
-        <a href="https://knowledgepharm.com" target="_blank" rel="noopener noreferrer">Knowledge Pharmaceuticals</a>.
+      <div class="promo-kicker">PKFIT STRUCTURE</div>
+      <p class="promo-copy">
+        PKFIT LITE is $20 one time and self-guided. PKFIT Standard is $250 per month with direct coaching.
       </p>
-      <p style="font-size:13px;color:var(--muted);margin-bottom:6px">Operator code</p>
-      <div class="code">PKFIT</div>
-      <p style="font-size:12px;color:var(--faint);margin-top:12px;line-height:1.5">
-        Apply the code at checkout. This is a research tool only — not medical advice.
-      </p>
+      <a href="/#offers">Compare PKFIT options</a>
     </div>
 
     <p class="disclaimer">
-      Research use only. This calculator provides mathematical conversion for reconstitution and dosing. It does not diagnose, treat, or recommend any compound. Verify all calculations independently. You are responsible for compliance with applicable laws and research protocols.
+      Research use only. This calculator provides mathematical conversion for reconstitution and dosing. It does not diagnose, treat, or recommend any compound. Verify all calculations independently. You are responsible for compliance with applicable laws and research protocols. Review PKFIT <a href="/policies/">privacy and support policies</a>.
     </p>
   </div>
 
@@ -233,49 +267,6 @@ input:focus,select:focus{border-color:var(--gold)}
 
 <script>
 (function () {
-  const STORAGE_KEY = 'pkfit_peptides_access';
-  const form = document.getElementById('gate-form');
-  const gateWrap = document.getElementById('gate-wrap');
-  const calc = document.getElementById('calculator');
-  const status = document.getElementById('gate-status');
-
-  function unlock() {
-    gateWrap.classList.add('hidden');
-    calc.classList.add('unlocked');
-    localStorage.setItem(STORAGE_KEY, '1');
-    compute();
-  }
-
-  // Restore if already unlocked on this device
-  if (localStorage.getItem(STORAGE_KEY) === '1') {
-    unlock();
-  }
-
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    const email = document.getElementById('email').value.trim().toLowerCase();
-    if (!email || !email.includes('@')) return;
-
-    // Store locally for now. Wire to Supabase / your endpoint later.
-    // Payload ready for your backend: { email, source: 'peptides', ts: Date.now() }
-    try {
-      const leads = JSON.parse(localStorage.getItem('pkfit_leads') || '[]');
-      leads.push({ email, source: 'peptides', ts: Date.now() });
-      localStorage.setItem('pkfit_leads', JSON.stringify(leads));
-    } catch (_) {}
-
-    status.hidden = false;
-    status.textContent = 'ACCESS GRANTED · CHECK YOUR INBOX FOR THE SOURCE LINK';
-    form.querySelector('button').textContent = 'UNLOCKED';
-    form.querySelector('button').disabled = true;
-
-    setTimeout(unlock, 600);
-
-    // Optional: fire a beacon / fetch to your Supabase or form endpoint here
-    // fetch('/api/leads', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ email, source: 'peptides' }) })
-  });
-
-  // Calculator
   const peptide = document.getElementById('peptide');
   const bac = document.getElementById('bac');
   const dose = document.getElementById('dose');
@@ -285,12 +276,15 @@ input:focus,select:focus{border-color:var(--gold)}
     const mg = parseFloat(peptide.value) || 0;
     const ml = parseFloat(bac.value) || 0;
     const mcg = parseFloat(dose.value) || 0;
-    const iuFull = parseFloat(syringe.value) || 100;
+    const capacityMl = parseFloat(syringe.value) || 1;
+    const warning = document.getElementById('capacity-warning');
 
-    if (mg <= 0 || ml <= 0) {
-      document.getElementById('out-conc').textContent = '—';
-      document.getElementById('out-units').textContent = '—';
-      document.getElementById('out-ml').textContent = '—';
+    if (mg <= 0 || ml <= 0 || mcg <= 0) {
+      document.getElementById('out-conc').textContent = '-';
+      document.getElementById('out-units').textContent = '-';
+      document.getElementById('out-ml').textContent = '-';
+      warning.hidden = true;
+      warning.textContent = '';
       return;
     }
 
@@ -298,8 +292,14 @@ input:focus,select:focus{border-color:var(--gold)}
     const mcgPerMl = (mg * 1000) / ml;
     // Volume needed for desired dose
     const drawMl = mcg / mcgPerMl;
-    // Units on insulin syringe (IU scale)
-    const units = drawMl * iuFull;
+    // U-100 markings always equal 100 units per mL. Syringe capacity changes
+    // the maximum volume it can hold, not the conversion between mL and units.
+    const units = drawMl * 100;
+    const exceedsCapacity = drawMl > capacityMl;
+    warning.hidden = !exceedsCapacity;
+    warning.textContent = exceedsCapacity
+      ? 'Calculated draw volume exceeds the selected syringe capacity.'
+      : '';
 
     document.getElementById('out-conc').textContent = Math.round(mcgPerMl) + ' mcg/mL';
     document.getElementById('out-units').textContent = (Math.round(units * 10) / 10) + ' u';
