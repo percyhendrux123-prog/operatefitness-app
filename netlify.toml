@@ -1,7 +1,7 @@
 [build]
-  # UI still has publish directory = dist (legacy Vite app).
-  # Copy static files into dist so deploy succeeds without dashboard changes.
-  command = "mkdir -p dist/peptides dist/policies dist/assets netlify/functions && cp index.html robots.txt sitemap.xml dist/ && cp peptides/index.html dist/peptides/ && cp policies/index.html dist/policies/ && cp -r assets/. dist/assets/"
+  # Static source is copied into dist for Netlify's publish directory.
+  # The public site has no runtime dependency on React, Vercel, Resend, or Supabase.
+  command = "mkdir -p dist/peptides dist/policies dist/coachapp dist/assets netlify/functions && cp index.html robots.txt sitemap.xml dist/ && cp peptides/index.html dist/peptides/ && cp policies/index.html dist/policies/ && cp coachapp/index.html dist/coachapp/ && cp -r assets/. dist/assets/"
   publish = "dist"
 
 [build.environment]
