@@ -1,0 +1,3 @@
+# Netlify redirects (processed before netlify.toml rules). PKFIT SYSTEM app routes live in the coach app.
+/system/start    https://console.operatefitness.app/system/start    301!
+/system/welcome  https://console.operatefitness.app/system/welcome  301!
