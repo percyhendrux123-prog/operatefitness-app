@@ -1,11 +1,26 @@
 [build]
   # Static source is copied into dist for Netlify's publish directory.
   # The public site has no runtime dependency on React, Vercel, Resend, or Supabase.
-  command = "mkdir -p dist/peptides dist/policies dist/coachapp dist/assets netlify/functions && cp index.html robots.txt sitemap.xml dist/ && cp peptides/index.html dist/peptides/ && cp policies/index.html dist/policies/ && cp coachapp/index.html dist/coachapp/ && cp -r assets/. dist/assets/"
+  command = "mkdir -p dist/peptides dist/policies dist/coachapp dist/system dist/assets netlify/functions && cp index.html robots.txt sitemap.xml dist/ && cp peptides/index.html dist/peptides/ && cp policies/index.html dist/policies/ && cp coachapp/index.html dist/coachapp/ && cp system/index.html dist/system/ && cp -r assets/. dist/assets/"
   publish = "dist"
 
 [build.environment]
   NODE_VERSION = "20"
+
+# PKFIT SYSTEM lives in the coach app at console.operatefitness.app. Spoken and printed
+# marketing uses the short brand URL; this hop makes it work.
+# /system/ is a static page on this site. The app's own SYSTEM routes hop to the coach app.
+[[redirects]]
+  from = "/system/start"
+  to = "https://console.operatefitness.app/system/start"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/system/welcome"
+  to = "https://console.operatefitness.app/system/welcome"
+  status = 301
+  force = true
 
 [functions]
   directory = "netlify/functions"
