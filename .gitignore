@@ -1,3 +1,5 @@
 # Local build and platform state
 /dist/
 /.netlify/
+__pycache__/
+*.pyc

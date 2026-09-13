@@ -8,8 +8,7 @@ const valid = {
   goal: 'Build a consistent training structure.', 'prior-barrier': 'Schedule drift.',
   'commitment-evidence': 'I kept three weekly sessions for six months.', 'training-access': 'Local gym.',
   'reliable-days': '4', 'schedule-constraint': 'Work travel once monthly.', 'current-coach': 'no',
-  'weekly-checkins': 'yes', 'public-checkpoints': 'yes', 'identity-format': 'first-name-last-initial',
-  'safety-gate': 'clear', 'health-screen-agreement': 'yes', 'terms-agreement': 'yes',
+  'weekly-checkins': 'yes', 'safety-gate': 'no', 'health-screen-agreement': 'yes', 'terms-agreement': 'yes',
   'typed-signature': 'Test Applicant', 'bot-field': ''
 };
 
@@ -42,6 +41,14 @@ test('validates the contact against the selected route', async () => {
   const fields={...valid, 'primary-contact':'not-an-email'};
   const handler=createApplicationHandler({now:()=>Date.parse('2026-09-14T12:00:00Z'),forward:async()=>new Response('',{status:200})});
   assert.equal((await handler(request(fields))).status,400);
+});
+
+test('rejects undeclared coach and safety enum values', async () => {
+  let calls=0;
+  const handler=createApplicationHandler({now:()=>Date.parse('2026-09-14T12:00:00Z'),forward:async()=>{calls++;return new Response('',{status:200})}});
+  assert.equal((await handler(request({...valid,'current-coach':'former-client'}))).status,400);
+  assert.equal((await handler(request({...valid,'safety-gate':'details-in-notes'}))).status,400);
+  assert.equal(calls,0);
 });
 
 test('accepts an application without public-media fields and does not forward them', async () => {

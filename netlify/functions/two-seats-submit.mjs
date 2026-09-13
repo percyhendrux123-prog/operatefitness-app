@@ -7,6 +7,8 @@ const REQUIRED = [
   'terms-agreement','typed-signature'
 ];
 const ALLOWED = new Set(['form-name','state','bot-field',...REQUIRED]);
+const COACH_STATUSES = new Set(['no','other-coach','pkfit-client']);
+const SAFETY_GATES = new Set(['no','yes','private']);
 const MAX_BODY = 64 * 1024;
 
 const reply = (status, text, headers={}) => new Response(text, {
@@ -48,6 +50,8 @@ export function createApplicationHandler({now=Date.now,forward}={}) {
     if (REQUIRED.some(key => !body.get(key))) return reply(400,'Complete every required field.');
     if ([...body.values()].some(value => value.length > 4000)) return reply(413,'A field is too long.');
     if (!validContact(body.get('preferred-contact'),body.get('primary-contact'))) return reply(400,'Enter a valid primary contact for the selected route.');
+    if (!COACH_STATUSES.has(body.get('current-coach'))) return reply(400,'Choose a declared coaching status.');
+    if (!SAFETY_GATES.has(body.get('safety-gate'))) return reply(400,'Choose a declared safety response.');
     if (body.get('current-coach') === 'pkfit-client') return reply(422,'Current active paid PKFIT clients are not eligible.');
     for (const key of ['adult-confirmation','weekly-checkins','health-screen-agreement','terms-agreement']) {
       if (body.get(key) !== 'yes') return reply(400,'Required acknowledgement missing.');
