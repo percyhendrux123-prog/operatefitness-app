@@ -3,7 +3,7 @@ const FORM_NAME = 'pkfit-two-seats-2026';
 const REQUIRED = [
   'full-name','city','preferred-contact','primary-contact','adult-confirmation','goal','prior-barrier',
   'commitment-evidence','training-access','reliable-days','schedule-constraint','current-coach',
-  'weekly-checkins','public-checkpoints','identity-format','safety-gate','health-screen-agreement',
+  'weekly-checkins','safety-gate','health-screen-agreement',
   'terms-agreement','typed-signature'
 ];
 const ALLOWED = new Set(['form-name','state','bot-field',...REQUIRED]);
@@ -48,8 +48,8 @@ export function createApplicationHandler({now=Date.now,forward}={}) {
     if (REQUIRED.some(key => !body.get(key))) return reply(400,'Complete every required field.');
     if ([...body.values()].some(value => value.length > 4000)) return reply(413,'A field is too long.');
     if (!validContact(body.get('preferred-contact'),body.get('primary-contact'))) return reply(400,'Enter a valid primary contact for the selected route.');
-    if (body.get('current-coach') !== 'no') return reply(422,'Current paying PKFIT coaching clients are not eligible.');
-    for (const key of ['adult-confirmation','weekly-checkins','public-checkpoints','health-screen-agreement','terms-agreement']) {
+    if (body.get('current-coach') === 'pkfit-client') return reply(422,'Current active paid PKFIT clients are not eligible.');
+    for (const key of ['adult-confirmation','weekly-checkins','health-screen-agreement','terms-agreement']) {
       if (body.get(key) !== 'yes') return reply(400,'Required acknowledgement missing.');
     }
     const forwarded=await send(body,request);

@@ -44,6 +44,34 @@ test('validates the contact against the selected route', async () => {
   assert.equal((await handler(request(fields))).status,400);
 });
 
+test('accepts an application without public-media fields and does not forward them', async () => {
+  let forwarded;
+  const fields={...valid};
+  delete fields['public-checkpoints'];
+  delete fields['identity-format'];
+  const handler=createApplicationHandler({now:()=>Date.parse('2026-09-14T12:00:00Z'),forward:async body=>{forwarded=body;return new Response('',{status:200})}});
+  const response=await handler(request(fields));
+  assert.equal(response.status,303);
+  assert.equal(forwarded.has('public-checkpoints'),false);
+  assert.equal(forwarded.has('identity-format'),false);
+});
+
+test('allows another-coach status to reach merit review', async () => {
+  let calls=0;
+  const handler=createApplicationHandler({now:()=>Date.parse('2026-09-14T12:00:00Z'),forward:async()=>{calls++;return new Response('',{status:200})}});
+  const response=await handler(request({...valid,'current-coach':'other-coach'}));
+  assert.equal(response.status,303);
+  assert.equal(calls,1);
+});
+
+test('rejects an active paid PKFIT client', async () => {
+  let calls=0;
+  const handler=createApplicationHandler({now:()=>Date.parse('2026-09-14T12:00:00Z'),forward:async()=>{calls++;return new Response('',{status:200})}});
+  const response=await handler(request({...valid,'current-coach':'pkfit-client'}));
+  assert.equal(response.status,422);
+  assert.equal(calls,0);
+});
+
 test('silently accepts honeypot traffic without forwarding', async () => {
   let calls=0;
   const handler=createApplicationHandler({now:()=>Date.parse('2026-09-14T12:00:00Z'),forward:async()=>{calls++;return new Response('',{status:200})}});
